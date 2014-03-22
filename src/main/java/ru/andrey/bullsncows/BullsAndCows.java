@@ -119,19 +119,24 @@ public class BullsAndCows implements Runnable {
 
   @Override
   public void run() {
-    int[] turnsCount = new int[10];
     for (int[] secret : all) {
-      int count = play(secret);
-      turnsCount[count]++;
-      //System.out.println("secret: " + Arrays.toString(secret) + ", turns: " + turns);
-    }
-    System.out.println("Total:");
-    for (int i = 1; i < 10; i++) {
-      System.out.println(i + ": " + turnsCount[i]);
+      play(secret);
     }
   }
 
+  public void runWithStatistic() {
+    int[] turnsCount = new int[10];
+    for (int[] secret : all) {
+      turnsCount[play(secret)]++;
+      //System.out.println("secret: " + Arrays.toString(secret) + ", turns: " + turns);
+    }
+    for (int i = 0; i < turnsCount.length; i++) {
+      System.out.println(i + ": " + turnsCount[i]);
+    }
+
+  }
+
   public static void main(String[] args) {
-    new BullsAndCows(3).run();
+    new BullsAndCows(3).runWithStatistic();
   }
 }

@@ -34,9 +34,11 @@ import java.util.concurrent.TimeUnit;
 @State(Scope.Benchmark)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @BenchmarkMode(Mode.Throughput)
+@Warmup(iterations = 5, time = 3)
+@Measurement(iterations = 5, time = 3)
 public class BullsAndCowsBenchmark {
 
-  @Param({"2", "3", "4"})
+  @Param({"2", "3"})
   public int n;
 
   public BullsAndCows bullsAndCows;
@@ -48,10 +50,14 @@ public class BullsAndCowsBenchmark {
 
 
   @GenerateMicroBenchmark
-  @Warmup(iterations = 5, time = 3)
-  @Measurement(iterations = 5, time = 3)
   public int findSingleNumber() {
     return bullsAndCows.play(bullsAndCows.all[70]);
+  }
+
+  @GenerateMicroBenchmark
+  @BenchmarkMode(Mode.AverageTime)
+  public void findAllNumbers() {
+    bullsAndCows.run();
   }
 
 }
