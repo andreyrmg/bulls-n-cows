@@ -79,15 +79,13 @@ public class BullsAndCows implements Runnable {
     for (int[] variant : all) {
       int max = 0;
       Arrays.fill(groups, 0);
-      int n = first;
-      while (n != -1) {
+      for (int n = first; n != -1; n = next[n]) {
         int i = match(all[n], variant);
         groups[i]++;
         if (groups[i] > max) {
           max = groups[i];
           if (max >= min) break;
         }
-        n = next[n];
       }
       if (max < min) {
         min = max;
@@ -101,8 +99,7 @@ public class BullsAndCows implements Runnable {
   private void filter(int[] number, int result) {
     remaining = 0;
     int last = -1;
-    int n = first;
-    while (n != -1) {
+    for (int n = first; n != -1; n = next[n]) {
       if (match(all[n], number) == result) {
         if (last == -1) {
           first = n;
@@ -112,9 +109,12 @@ public class BullsAndCows implements Runnable {
         last = n;
         remaining++;
       }
-      n = next[n];
     }
-    if (last != -1) next[last] = -1;
+    if (last != -1) {
+      next[last] = -1;
+    } else {
+      first = -1;
+    }
   }
 
   @Override
